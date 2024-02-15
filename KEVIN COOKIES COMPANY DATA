@@ -1,5 +1,5 @@
---THIS IS THE DATA FROM KEVIN COOKIES COMPANY
---I PROCESSED THIS DATA USING MICROSOFT SQL
+--THIS IS THE DATA FROM KEVIN COOKIES COMPANY--
+--I PROCESSED THIS DATA USING MICROSOFT SQL--
 
 -- I WANT TO VIEW CUSTOMER NAME OF KEVIN COOKIES COMPANY USING MICROSOFT SQL WITH KCC DATABASE--
 Select CustomerName
@@ -40,7 +40,7 @@ Select *
 From dbo.Customers
 Where state = 'WA' or State = 'NY'
 
---TO VIEW CUSTOMER DATA IN WASHINGTON DC (WA), NEW YORK (NY) AND UTAH (UT) LOCATIONS.
+--TO VIEW CUSTOMER DATA IN WASHINGTON DC (WA), NEW YORK (NY) AND UTAH (UT) LOCATIONS--
 Select *
 From dbo.Customers
 Where state = 'WA' or state = 'NY' or state = 'UT'
@@ -49,17 +49,17 @@ Select *
 From dbo.Customers
 Where state IN ('WA','NY','UT')
 
---TO VIEW CUSTOMER DATA WHOSE LOCATION IS NOT IN WASHINGTON DC (WA), NEW YORK (NY) AND UTAH (UT)
+--TO VIEW CUSTOMER DATA WHOSE LOCATION IS NOT IN WASHINGTON DC (WA), NEW YORK (NY) AND UTAH (UT)--
 Select *
 From dbo.Customers
 Where state NOT IN ('WA','NY','UT')
 
---TO VIEW CUSTOMER DATA LOCATED IN THE UNITED STATES
+--TO VIEW CUSTOMER DATA LOCATED IN THE UNITED STATES--
 Select *
 From dbo.Customers
 Where CustomerName = 'Tres Delicious' AND Country = 'United States'
 
---TO VIEW DATA ON CUSTOMERS LOCATED IN THE UNITED STATES AND FRANCE
+--TO VIEW DATA ON CUSTOMERS LOCATED IN THE UNITED STATES AND FRANCE--
 Select *
 From dbo.Customers
 Where CustomerName = 'Tres Delicious' AND Country = 'United States'
@@ -70,19 +70,19 @@ From dbo.Customers
 Where CustomerName = 'Tres Delicious' AND (Country = 'United States'
 OR Country = 'France')
 
---TO VIEW CUSTOMER DATA WHOSE NAME STARTS WITH THE LETTER 'A'
+--TO VIEW CUSTOMER DATA WHOSE NAME STARTS WITH THE LETTER 'A'--
 Select *
 From dbo.Customers
 Where CustomerName Like 'A%' AND (Country = 'United States'
 OR Country = 'France')
 
---TO VIEW CUSTOMER DATA WHOSE NAME DOES NOT START WITH THE LETTER A
+--TO VIEW CUSTOMER DATA WHOSE NAME DOES NOT START WITH THE LETTER A--
 Select *
 From dbo.Customers
 Where CustomerName Not Like 'A%' AND (Country = 'United States'
 OR Country = 'France')
 
---TO VIEW DATA ON CUSTOMERS WHO HAVE ORDERED MORE THAN 1000 ITEMS.
+--TO VIEW DATA ON CUSTOMERS WHO HAVE ORDERED MORE THAN 1000 ITEMS--
 SELECT TOP (1000) [OrderID]
       ,[OrderDate]
       ,[CustomerID]
@@ -90,7 +90,7 @@ SELECT TOP (1000) [OrderID]
   FROM [KCC].[dbo].[Orders]
   WHERE OrderTotal > 1000
 
---TO VIEW DATA ON CUSTOMERS WHO ORDERED LESS THAN 1000 
+--TO VIEW DATA ON CUSTOMERS WHO ORDERED LESS THAN 1000--
   SELECT TOP (1000) [OrderID]
       ,[OrderDate]
       ,[CustomerID]
@@ -98,7 +98,7 @@ SELECT TOP (1000) [OrderID]
   FROM [KCC].[dbo].[Orders]
   WHERE OrderTotal <= 1000
 
---TO VIEW THE DATA OF CUSTOMERS WHO ORDERED WITH QUANTITIES OF 1000 AND 2000
+--TO VIEW THE DATA OF CUSTOMERS WHO ORDERED WITH QUANTITIES OF 1000 AND 2000--
  SELECT TOP (1000) [OrderID]
       ,[OrderDate]
       ,[CustomerID]
@@ -106,11 +106,11 @@ SELECT TOP (1000) [OrderID]
   FROM [KCC].[dbo].[Orders]
   WHERE OrderTotal between 1000 AND 2000
 
---TO VIEW ORDER DATA, FROM DATE, CUSTOMER ID, AND ORDER AMOUNT
+--TO VIEW ORDER DATA, FROM DATE, CUSTOMER ID, AND ORDER AMOUNT--
   Select OrderID, OrderDate, OrderTotal
   FROM dbo.Orders
 
---TO COMBINE CUSTOMER DATA AND ORDER DATA
+--TO COMBINE CUSTOMER DATA AND ORDER DATA--
   Select OrderID, OrderDate, OrderTotal, CustomerName, Phone
   FROM dbo.Orders
   JOIN dbo.Customers ON dbo.Orders.CustomerID = dbo.Customers.CustomerID
@@ -131,7 +131,7 @@ SELECT TOP (1000) [OrderID]
   FROM dbo.Orders
   LEFT OUTER JOIN dbo.Customers ON dbo.Orders.CustomerID = dbo.Customers.CustomerID
 
---TO COMBINE CUSTOMER DATA AND ORDER DATA AND SORTED BY ORDER AMOUNT
+--TO COMBINE CUSTOMER DATA AND ORDER DATA AND SORTED BY ORDER AMOUNT--
   Select OrderID, OrderDate, OrderTotal, CustomerName, Phone, dbo.Customers.CustomerID
   FROM dbo.Orders
   LEFT OUTER JOIN dbo.Customers ON dbo.Orders.CustomerID = dbo.Customers.CustomerID
@@ -142,7 +142,7 @@ SELECT TOP (1000) [OrderID]
   LEFT OUTER JOIN dbo.Customers ON dbo.Orders.CustomerID = dbo.Customers.CustomerID
   ORDER BY OrderTotal DESC
 
---TO VIEW BOOKING DATA ON FEBRUARY 18, 2022
+--TO VIEW BOOKING DATA ON FEBRUARY 18, 2022--
   SELECT *
   FROM dbo.Orders
   WHERE OrderDate >= '2/18/2022'
@@ -151,7 +151,7 @@ SELECT TOP (1000) [OrderID]
   FROM dbo.Orders
   WHERE OrderDate >= Dateadd(month,-1,getdate())
 
---TO CALCULATE HOW MANY ORDERS ON FEBRUARY 18, 2022
+--TO CALCULATE HOW MANY ORDERS ON FEBRUARY 18, 2022--
    SELECT COUNT(*)
   FROM dbo.Orders
   WHERE OrderDate >= Dateadd(month,-1,getdate())
@@ -160,17 +160,25 @@ SELECT TOP (1000) [OrderID]
   FROM dbo.Orders
   WHERE OrderDate >= '2/18/2022'
 
---TO SUM UP ALL ORDERS
+--TO SUM UP ALL ORDERS--
   SELECT SUM(OrderTotal)
   FROM dbo.Orders
   WHERE OrderDate >= '2/18/2022'
 
---TO SUM ALL ORDERS AND SORT BY CUSTOMER ID
+--TO SUM ALL ORDERS AND SORT BY CUSTOMER ID--
   SELECT SUM(OrderTotal)
   FROM dbo.Orders
   WHERE OrderDate >= '2/18/2022'
   GROUP BY CustomerID
 
+--TO MERGE DATA FROM TWO DIFFERENT FOLDERS AND SORT THEM BY ORDER ID, DATE, TOTAL FROM THE ORDER FILE AND CUSTOMER NAME FROM THE CUSTOMERS FILE. THE DATA TAKEN IS ONLY ON FEBRUARY 18, 2022--
+SELECT        Orders.OrderID, Orders.OrderDate, Orders.OrderTotal, Customers.CustomerName AS [CUSTOMER NAME]
+FROM            Customers INNER JOIN
+                         Orders ON Customers.CustomerID = Orders.CustomerID
+GROUP BY Orders.OrderID, Orders.OrderDate, Orders.OrderTotal, Customers.CustomerName
+HAVING        (Orders.OrderDate >= CONVERT(DATETIME, '2022-02-18 00:00:00', 102))
+
+ 
 
 
 
